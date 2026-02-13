@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRD Visual Note Board</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <h1>PRD Visual Note Board</h1>
+        <p class="subtitle">Organize PM notes visually, then send structured context to your document workflow.</p>
+
+        <section class="panel">
+          <h2>Create note</h2>
+          <label>Title<input id="noteTitle" type="text" placeholder="Feature idea" /></label>
+          <label>Description<textarea id="noteBody" rows="4" placeholder="Describe the requirement, acceptance criteria, or context..."></textarea></label>
+          <div class="inline-grid">
+            <label>Type
+              <select id="noteType">
+                <option value="Feature">Feature</option>
+                <option value="Requirement">Requirement</option>
+                <option value="User Story">User Story</option>
+                <option value="Risk">Risk</option>
+                <option value="Dependency">Dependency</option>
+              </select>
+            </label>
+            <label>Hierarchy
+              <select id="noteLevel">
+                <option value="Initiative">Initiative</option>
+                <option value="Epic">Epic</option>
+                <option value="Feature">Feature</option>
+                <option value="Task">Task</option>
+              </select>
+            </label>
+          </div>
+          <label>Group<select id="noteGroup"></select></label>
+          <button id="addNoteBtn">Add note</button>
+        </section>
+
+        <section class="panel">
+          <h2>Groups</h2>
+          <div class="inline-grid">
+            <label>Name<input id="groupName" type="text" placeholder="Feature A" /></label>
+            <label>Color<input id="groupColor" type="color" value="#5d7dff" /></label>
+          </div>
+          <button id="addGroupBtn">Add group</button>
+          <ul id="groupList" class="group-list"></ul>
+        </section>
+
+        <section class="panel">
+          <h2>Export target</h2>
+          <label>Custom GPT / endpoint URL
+            <input id="targetUrl" type="url" placeholder="https://example.com/ingest" />
+          </label>
+          <label>Scope<select id="sendScope"></select></label>
+          <div class="button-row">
+            <button id="sendBtn">Send structured notes</button>
+            <button id="copyBtn" class="secondary">Copy JSON</button>
+          </div>
+          <p id="status" class="status"></p>
+        </section>
+      </aside>
+
+      <main class="canvas-wrap">
+        <div id="canvas" class="canvas"></div>
+      </main>
+    </div>
+
+    <template id="noteTemplate">
+      <article class="note">
+        <header>
+          <h3 class="note-title"></h3>
+          <button class="delete-btn" title="Delete note">×</button>
+        </header>
+        <div class="meta"></div>
+        <p class="note-body"></p>
+      </article>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
