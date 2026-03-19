@@ -2,82 +2,130 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PRD Visual Note Board</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#120f24" />
+    <title>Last Light: Ten Minutes</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app">
-      <aside class="sidebar">
-        <h1>PRD Visual Note Board</h1>
-        <p class="subtitle">Organize PM notes visually, then send structured context to your document workflow.</p>
+    <main class="shell">
+      <section id="titleScreen" class="screen card active">
+        <p class="eyebrow">Single-tap fantasy roguelike</p>
+        <h1>Last Light: Ten Minutes</h1>
+        <p class="lede">
+          Survive escalating waves, grab one power-up after every victory, and face the final boss when the
+          ten-minute doom clock expires.
+        </p>
 
-        <section class="panel">
-          <h2>Create note</h2>
-          <label>Title<input id="noteTitle" type="text" placeholder="Feature idea" /></label>
-          <label>Description<textarea id="noteBody" rows="4" placeholder="Describe the requirement, acceptance criteria, or context..."></textarea></label>
-          <div class="inline-grid">
-            <label>Type
-              <select id="noteType">
-                <option value="Feature">Feature</option>
-                <option value="Requirement">Requirement</option>
-                <option value="User Story">User Story</option>
-                <option value="Risk">Risk</option>
-                <option value="Dependency">Dependency</option>
-              </select>
-            </label>
-            <label>Hierarchy
-              <select id="noteLevel">
-                <option value="Initiative">Initiative</option>
-                <option value="Epic">Epic</option>
-                <option value="Feature">Feature</option>
-                <option value="Task">Task</option>
-              </select>
-            </label>
+        <div class="feature-list">
+          <div>
+            <strong>One thumb only</strong>
+            <span>Tap enemies to attack. Tap a reward to evolve.</span>
           </div>
-          <label>Group<select id="noteGroup"></select></label>
-          <button id="addNoteBtn">Add note</button>
-        </section>
-
-        <section class="panel">
-          <h2>Groups</h2>
-          <div class="inline-grid">
-            <label>Name<input id="groupName" type="text" placeholder="Feature A" /></label>
-            <label>Color<input id="groupColor" type="color" value="#5d7dff" /></label>
+          <div>
+            <strong>Built for iPhone Safari</strong>
+            <span>Fast-loading static files, oversized touch targets, no controller required.</span>
           </div>
-          <button id="addGroupBtn">Add group</button>
-          <ul id="groupList" class="group-list"></ul>
-        </section>
-
-        <section class="panel">
-          <h2>Export target</h2>
-          <label>Custom GPT / endpoint URL
-            <input id="targetUrl" type="url" placeholder="https://example.com/ingest" />
-          </label>
-          <label>Scope<select id="sendScope"></select></label>
-          <div class="button-row">
-            <button id="sendBtn">Send structured notes</button>
-            <button id="copyBtn" class="secondary">Copy JSON</button>
+          <div>
+            <strong>Runs save mid-adventure</strong>
+            <span>Your current run auto-saves locally so you can resume later.</span>
           </div>
-          <p id="status" class="status"></p>
-        </section>
-      </aside>
+        </div>
 
-      <main class="canvas-wrap">
-        <div id="canvas" class="canvas"></div>
-      </main>
-    </div>
+        <div class="button-stack">
+          <button id="startBtn" class="primary">Start new run</button>
+          <button id="resumeBtn" class="secondary" hidden>Resume saved run</button>
+          <button id="wipeBtn" class="ghost" hidden>Delete saved run</button>
+        </div>
+      </section>
 
-    <template id="noteTemplate">
-      <article class="note">
-        <header>
-          <h3 class="note-title"></h3>
-          <button class="delete-btn" title="Delete note">×</button>
+      <section id="gameScreen" class="screen" hidden>
+        <header class="topbar card">
+          <div>
+            <p class="eyebrow">Doom clock</p>
+            <div id="timer" class="timer">10:00</div>
+          </div>
+          <div class="topbar-meta">
+            <div>
+              <span class="meta-label">Level</span>
+              <strong id="levelValue">1</strong>
+            </div>
+            <div>
+              <span class="meta-label">Wave</span>
+              <strong id="waveValue">1</strong>
+            </div>
+            <div>
+              <span class="meta-label">Threat</span>
+              <strong id="threatValue">Skirmish</strong>
+            </div>
+          </div>
         </header>
-        <div class="meta"></div>
-        <p class="note-body"></p>
-      </article>
-    </template>
+
+        <section class="stats card">
+          <div class="stat-block health-block">
+            <span class="meta-label">Health</span>
+            <strong id="healthValue">0 / 0</strong>
+            <div class="meter"><span id="healthFill"></span></div>
+          </div>
+          <div class="stat-grid">
+            <div><span class="meta-label">Damage</span><strong id="damageValue">0</strong></div>
+            <div><span class="meta-label">Defense</span><strong id="defenseValue">0</strong></div>
+            <div><span class="meta-label">Burn</span><strong id="burnValue">0%</strong></div>
+            <div><span class="meta-label">Multi-hit</span><strong id="multiValue">0%</strong></div>
+          </div>
+        </section>
+
+        <section class="battlefield card">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Tap a foe to take your turn</p>
+              <h2 id="encounterTitle">Opening skirmish</h2>
+            </div>
+            <button id="menuBtn" class="ghost small">Leave run</button>
+          </div>
+          <div id="enemyGrid" class="enemy-grid"></div>
+        </section>
+
+        <section id="rewardPanel" class="card overlay-panel" hidden>
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Spoils of victory</p>
+              <h2>Choose one power-up</h2>
+            </div>
+          </div>
+          <div id="rewardGrid" class="reward-grid"></div>
+        </section>
+
+        <section class="log card">
+          <div class="section-head compact">
+            <div>
+              <p class="eyebrow">Battle log</p>
+              <h2>What just happened</h2>
+            </div>
+          </div>
+          <ul id="logList" class="log-list"></ul>
+        </section>
+      </section>
+
+      <section id="gameOverScreen" class="screen card" hidden>
+        <p class="eyebrow">Run complete</p>
+        <h2 id="gameOverTitle">You fell.</h2>
+        <p id="gameOverText" class="lede"></p>
+        <div class="summary-grid">
+          <div><span class="meta-label">Level reached</span><strong id="summaryLevel">0</strong></div>
+          <div><span class="meta-label">Turns taken</span><strong id="summaryTurns">0</strong></div>
+          <div><span class="meta-label">Bosses beaten</span><strong id="summaryBosses">0</strong></div>
+          <div><span class="meta-label">Power-ups</span><strong id="summaryPowers">0</strong></div>
+        </div>
+        <div class="button-stack">
+          <button id="restartBtn" class="primary">Play again</button>
+          <button id="titleBtn" class="secondary">Return to title</button>
+        </div>
+      </section>
+    </main>
 
     <script src="app.js"></script>
   </body>

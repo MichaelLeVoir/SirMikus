@@ -1,25 +1,35 @@
-# PRD Visual Note Board
+# Last Light: Ten Minutes
 
-A lightweight browser app for product managers to:
+A lightweight, mobile-first browser roguelike designed for iPhone Safari.
 
-- Capture PRD-oriented notes in draggable cards.
-- Keep visual hierarchy using note type + hierarchy level.
-- Group related cards with color-coded group hulls.
-- Export structured JSON to a custom ChatGPT / endpoint URL.
+## Core loop
 
-## Run
+- Tap **Start** to begin a run and trigger the fixed ten-minute doom clock.
+- Tap enemies to attack; then the surviving enemies take their turn.
+- Clear a wave to choose **one** of three power-ups.
+- Every 5 levels includes a mini-boss, every 10 levels includes a boss, and when the timer expires the final boss appears immediately.
+- Current run state persists in `localStorage`, so you can leave the run and resume it later.
+
+## Stats and modifiers
+
+The run focuses on simple stats:
+
+- **Damage**
+- **Defense**
+- **Health**
+
+Power-ups add lightweight action-RPG modifiers such as:
+
+- burn chance and burn damage-over-time
+- multi-hit chance
+- splash damage
+- thorn retaliation
+- negative timer modifiers that either remove time directly or speed up the countdown
+
+## Run locally
 
 ```bash
 python3 -m http.server 4173
 ```
 
-Then open `http://localhost:4173`.
-
-## Key workflow
-
-1. Create groups for each workstream or feature area.
-2. Add notes with title/description/type/hierarchy.
-3. Drag notes around the board for visual organization.
-4. Set a custom URL and either send payload directly or copy JSON.
-
-Data persists in `localStorage`.
+Then open `http://localhost:4173` in a browser.
